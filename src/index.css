@@ -5,291 +5,279 @@
 
 :root {
     --basic: #f9e6c7;
-  }
-  
-  
-  * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-  }
-  
-  body {
-      background-color: #090114;
-      color: var(--text-color);
-      height: 100%;
-      width: 100%;
-  
-      font-family: 'Roboto', sans-serif;
-      overflow: hidden;
-  }
-  
-  .card {
-      /* background: #161b22; */
-      color: white;
-      padding: 20px 30px;
-      margin: 15px 0;
-      border-radius: 15px;
-      background: rgba(51, 51, 51, 0.318);
-      /* backdrop-filter: blur(20px); */
-      /* background: ; */
-      /* -webkit-backdrop-filter: blur(6px); */
-      box-shadow: 0 4px 12px rgba(30, 30, 30, 0.3);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      width: 50%;
-  }
-  
-  .label {
-      font-size: 0.9rem;
-      text-transform: uppercase;
-      color: var(--basic);
-      margin-bottom: 10px;
-  }
-  
-  .value {
-      font-size: 2.5rem;
-      font-weight: bold;
-  }
-  
-  .value1 {
-      font-size: 1rem;
-      font-weight: light;
-      color: var(--basic);
-  
-  }
-  
-  .progress-container {
-      width: 100%;
-      height: 1px;
-      display: flex;
-      align-items: center;
-      background: #30363d;
-      border-radius: 4px;
-      margin: 10px 0 5px;
-  }
-  
-  .year-progress-tab {
-      display: flex;
-      margin-top: 18px;
-      margin-bottom: 20px;
-      justify-content: space-between;
-      align-items: end;
-  }
-  
-  .percentage {
-      display: flex;
-      justify-content: center;
-      align-items: end;
-  }
-  
-  .percentage .pers {
-      color: #909090;
-  }
-  
-  .year-progress-bar {
-      height: 8px;
-      background: linear-gradient(270deg, #f9e6c7, #f6b9a9, #ce98f3, #757aef 116.27%);
-      border-radius: 999px;
-      transition: width 0.6s ease;
-  }
-  
-  .row {
-      display: flex;
-      padding-top: 20px;
-      justify-content: center;
-      margin-top: 10px;
-      flex-wrap: wrap;
-  }
-  
-  .you-r {
-      text-align: center;
-      font-weight: 400;
-      padding: 20px 0;
-      color: white;
-  }
-  
-  .row2 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      justify-items: center;
-      margin-top: 10px;
-  }
-  
-  .unit-block {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      color: white;
-  }
-  
-  .unit-block span {
-      font-size: 0.9rem;
-      color: #8b949e;
-      margin-top: 4px;
-  }
-  
-  .unit {
-      font-size: 40px;
-      line-height: 48px;
-      letter-spacing: -.4px;
-      font-weight: 500;
-  }
-  
-  button {
-      background-color: #238636;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-size: 1rem;
-      cursor: pointer;
-      margin-top: 10px;
-  }
-  
-  /* Modal styles */
-  .modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-  }
-  
-  .modal-content {
-      background: #161b22;
-      padding: 20px;
-      border-radius: 10px;
-      text-align: center;
-      width: 300px;
-  }
-  
-  .modal input {
-      padding: 8px;
-      margin: 10px 0;
-      width: 100%;
-      font-size: 1rem;
-      border: 1px solid #444;
-      border-radius: 6px;
-      background-color: #0d1117;
-      color: #c9d1d9;
-  }
-  
-  .container {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      height: 100%;
-      width: 100%;
-  }
-  
-  /* Main Content Styles */
-  .main-content {
-      flex: 1;
-      padding: 2rem;
-      display: flex;
-      width: 100%;
-      flex-direction: column;
-      align-items: center;
-      overflow-y: auto;
-      justify-content: center;
-      position: relative;
-      padding-bottom: 100px;
-      /* Make space for the dock */
-  }
-  
-  
-  /* Mac Dock Styles */
-  .dock {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 1000;
-  }
-  
-  .dock-container {
-      display: flex;
-      background-color: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      transition: all 0.4s ;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      border-radius: 16px;
-      padding: 10px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  }
-  
-  .dock-item {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin: 0 8px;
-      text-decoration: none;
-  }
-  
-  .dock-icon {
-      width: 48px;
-      height: 48px;
-      background-color: white;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1.25);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      margin-bottom: 5px;
-  }
-  
-  .dock-icon img {
-      width: 32px;
-      height: 32px;
-      border-radius: 6px;
-  }
-  
-  .dock-icon i {
-      font-size: 24px;
-      color: #4f46e5;
-  }
-  
-  .dock-item:hover .dock-icon {
-      transform: translateY(-10px) scale(1.2);
-  }
-  
-  .tooltip {
-      position: absolute;
-      top: -30px;
-      background-color: rgba(0, 0, 0, 0.8);
-      color: white;
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 12px;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.2s, visibility 0.2s;
-      white-space: nowrap;
-  }
-  
-  .dock-item:hover .tooltip {
-      opacity: 1;
-      visibility: visible;
-  }
-  
-  .dock-divider {
-      width: 1px;
-      height: 40px;
-      background-color: rgba(255, 255, 255, 0.5);
-      margin: 0 8px;
-      align-self: center;
-  }
-  
-  .add-dock-item .dock-icon {
-      background-color: rgba(255, 255, 255, 0.8);
-      border: 2px dashed var(--border-color);
-  }
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #090114;
+    color: var(--text-color);
+    height: 100%;
+    width: 100%;
+    font-family: 'Roboto', sans-serif;
+    overflow: hidden;
+}
+
+.card {
+    /* background: #161b22; */
+    color: white;
+    padding: 20px 30px;
+    margin: 15px 0;
+    border-radius: 15px;
+    background: rgba(51, 51, 51, 0.318);
+    box-shadow: 0 4px 12px rgba(30, 30, 30, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 50%;
+}
+
+.label {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    color: var(--basic);
+    margin-bottom: 10px;
+}
+
+.value {
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.value1 {
+    font-size: 1rem;
+    font-weight: light;
+    color: var(--basic);
+
+}
+
+.progress-container {
+    width: 100%;
+    height: 1px;
+    display: flex;
+    align-items: center;
+    background: #30363d;
+    border-radius: 4px;
+    margin: 10px 0 5px;
+}
+
+.year-progress-tab {
+    display: flex;
+    margin-top: 18px;
+    margin-bottom: 20px;
+    justify-content: space-between;
+    align-items: end;
+}
+
+.percentage {
+    display: flex;
+    justify-content: center;
+    align-items: end;
+}
+
+.percentage .pers {
+    color: #909090;
+}
+
+.year-progress-bar {
+    height: 8px;
+    background: linear-gradient(270deg, #f9e6c7, #f6b9a9, #ce98f3, #757aef 116.27%);
+    border-radius: 999px;
+    transition: width 0.6s ease;
+}
+
+.row {
+    display: flex;
+    padding-top: 20px;
+    justify-content: center;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+.you-r {
+    text-align: center;
+    font-weight: 400;
+    padding: 20px 0;
+    color: white;
+}
+
+.row2 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    justify-items: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.unit-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    font-size: 3rem;
+}
+
+.unit-block-span {
+    font-size: 1rem;
+    color: #8b949e;
+    margin-top: 4px;
+}
+
+.unit {
+    font-size: 40px;
+    line-height: 48px;
+    letter-spacing: -.4px;
+    font-weight: 500;
+}
+
+/* Modal styles */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #161b22;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 300px;
+}
+
+.modal input {
+    padding: 8px;
+    margin: 10px 0;
+    width: 100%;
+    font-size: 1rem;
+    border: 1px solid #444;
+    border-radius: 6px;
+    background-color: #0d1117;
+    color: #c9d1d9;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+/* Main Content Styles */
+.main-content {
+    flex: 1;
+    padding: 2rem;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    justify-content: center;
+    position: relative;
+    padding-bottom: 100px;
+    /* Make space for the dock */
+}
+
+
+/* Mac Dock Styles */
+.dock {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+
+.dock-container {
+    display: flex;
+    background-color: #ffffff33;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all 0.4s;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 16px;
+    padding: 10px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.dock-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 5px;
+    text-decoration: none;
+}
+
+.dock-icon {
+    width: 48px;
+    height: 48px;
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1.25);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 5px;
+}
+
+.dock-icon img {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+}
+
+.dock-icon i {
+    font-size: 24px;
+    color: #4f46e5;
+}
+
+.dock-item:hover .dock-icon {
+    transform: translateY(-10px) scale(1.2);
+}
+
+.tooltip {
+    position: absolute;
+    top: -30px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s, visibility 0.2s;
+    white-space: nowrap;
+}
+
+.dock-item:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+.dock-divider {
+    width: 1px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.5);
+    margin: 0 8px;
+    align-self: center;
+}
+
+.add-dock-item .dock-icon {
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 2px dashed var(--border-color);
+}
