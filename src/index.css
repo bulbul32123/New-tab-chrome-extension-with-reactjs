@@ -281,3 +281,29 @@ body {
     background-color: rgba(255, 255, 255, 0.8);
     border: 2px dashed var(--border-color);
 }
+
+@keyframes sound-wave {
+
+    0%,
+    100% {
+        transform: scaleY(1);
+    }
+
+    50% {
+        transform: scaleY(1.5);
+    }
+}
+
+.animate-wave {
+    animation: sound-wave 0.5s infinite;
+    transform-origin: bottom;
+}
+
+@keyframes spin-slow {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  .animate-spin-slow {
+    animation: spin-slow 4s linear infinite;
+  }
