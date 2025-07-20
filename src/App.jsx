@@ -108,7 +108,6 @@ function App() {
       setYearProgress(percent);
       setYearRemaining(remaining);
     };
-
     updateProgress(); // set immediately
 
     const interval = setInterval(updateProgress, 1000); // update every second

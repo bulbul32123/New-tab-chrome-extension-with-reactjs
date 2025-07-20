@@ -196,7 +196,7 @@ export default function Docks() {
     return (
         <>
             <AddDocks open={openAddDockModel} close={setOpenAddDockModel} setDockData={setDocksToLocalStorage} />
-            <MusicModel open={openAddMusicModel} close={setOpenAddMusicModel} setDockData={setMusicToLocalStorage} isPlaying={isPlaying} setIsPlaying={setIsPlaying} data={data} />
+            {/* <MusicModel open={openAddMusicModel} close={setOpenAddMusicModel} setDockData={setMusicToLocalStorage} isPlaying={isPlaying} setIsPlaying={setIsPlaying} data={data} /> */}
 
 
             <div className="dock">
@@ -218,13 +218,15 @@ export default function Docks() {
                         </div>
                         <span className="tooltip">Add</span>
                     </button>
-                    <button className="dock-item add-dock-item" onClick={() => setOpenAddMusicModel(true)}>
+
+                    {/* <button className="dock-item add-dock-item" onClick={() => setOpenAddMusicModel(true)}>
                         <div className="dock-icon">
                             <span><FaMusic className={`${isPlaying ? "animate-wave" : ""}`} size={20} />
                             </span>
                         </div>
                         <span className="tooltip">{isPlaying ? "Music Playing" : "Music"}</span>
-                    </button>
+                    </button> */}
+
                     <button className="dock-item" id="settings-icon">
                         <div className="dock-icon">
                             <span><IoSettingsSharp size={20} /></span>
