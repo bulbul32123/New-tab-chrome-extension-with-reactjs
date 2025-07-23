@@ -1,4 +1,4 @@
-I build a New tab chrome extension using reactjs and tailwindcss. this extension helps to add your links with name. you can edit it. 
+I build a New tab chrome extension using reactjs and tailwindcss. this extension helps to add your links with name. you can edit it. you can use it to replace your default chrome home to custom home page
 
 Currently, two official plugins are available:
 
