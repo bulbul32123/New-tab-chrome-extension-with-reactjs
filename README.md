@@ -1,6 +1,4 @@
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+I build a New tab chrome extension using reactjs and tailwindcss. this extension helps to add your links with name. you can edit it. 
 
 Currently, two official plugins are available:
 
