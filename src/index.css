@@ -7,13 +7,6 @@
     --basic: #f9e6c7;
 }
 
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 body {
     background-color: #090114;
     color: var(--text-color);
@@ -24,7 +17,6 @@ body {
 }
 
 .card {
-    /* background: #161b22; */
     color: white;
     padding: 20px 30px;
     margin: 15px 0;
