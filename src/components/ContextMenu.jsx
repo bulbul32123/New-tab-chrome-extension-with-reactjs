@@ -19,8 +19,7 @@ export const ContextMenu = ({ x, y, onEdit, onDelete, onClose }) => {
   return (
     <div
       ref={menuRef}
-      className="fixed z-50 bg-[#2a2a2a] rounded-xl shadow-2xl border border-gray-600 overflow-hidden"
-      style={{ left: x, top: y }}
+      className="fixed -top-20 z-50 bg-[#2a2a2a] rounded-xl shadow-2xl border border-gray-600 overflow-hidden"
     >
       <div className="p-2 min-w-[200px]">
         <button

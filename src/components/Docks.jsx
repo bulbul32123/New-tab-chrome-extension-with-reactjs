@@ -1,11 +1,12 @@
-import { IoMdAdd } from "react-icons/io";
+import { IoMdAdd, IoMdCloseCircle } from "react-icons/io";
 import { IoSettingsSharp } from "react-icons/io5";
 import { ContextMenu } from "./ContextMenu";
 import { FlippingClock } from "./FlippingClock";
 import { SettingsModal } from "./SettingsModel";
 import { EditDockModal } from "./EditDockModel";
 import { AddDocks } from "./AddDocks";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
+import { FaEdit } from "react-icons/fa";
 
 export default function Docks() {
     const [openAddDockModel, setOpenAddDockModel] = useState(false);
@@ -14,10 +15,14 @@ export default function Docks() {
     const [docks, setDocks] = useState([]);
     const [draggedItem, setDraggedItem] = useState(null);
     const [draggedOverIndex, setDraggedOverIndex] = useState(null);
-    const [contextMenu, setContextMenu] = useState(null);
+    const [editDockOnRightClick, setEditDockOnRightClick] = useState(false);
     const [editingDock, setEditingDock] = useState(null);
     const [showClock, setShowClock] = useState(false);
     const [lastActivity, setLastActivity] = useState(Date.now());
+    const [dragStartPosition, setDragStartPosition] = useState({ x: 0, y: 0 });
+    const [isDragging, setIsDragging] = useState(false);
+    
+    const dockRef = useRef(null);
 
     // Activity tracking
     const updateActivity = useCallback(() => {
@@ -39,6 +44,23 @@ export default function Docks() {
         };
     }, [updateActivity]);
 
+    // Click outside handler to hide edit/delete icons
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dockRef.current && !dockRef.current.contains(event.target)) {
+                setEditDockOnRightClick(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        document.addEventListener('contextmenu', handleClickOutside);
+        
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener('contextmenu', handleClickOutside);
+        };
+    }, []);
+
     // Clock timer
     useEffect(() => {
         const interval = setInterval(() => {
@@ -58,7 +80,6 @@ export default function Docks() {
         } catch (error) {
             setDocks([]);
             console.log(error);
-
         }
     };
 
@@ -76,25 +97,22 @@ export default function Docks() {
 
     const handleContextMenu = (e, dock) => {
         e.preventDefault();
-        setContextMenu({
-            x: e.clientX,
-            y: e.clientY,
-            dock
-        });
+        e.stopPropagation();
+        setEditDockOnRightClick(dock);
     };
 
     const closeContextMenu = () => {
-        setContextMenu(null);
+        setEditDockOnRightClick(false);
     };
 
-    const handleEdit = () => {
-        setEditingDock(contextMenu.dock);
+    const handleEdit = (dock) => {
+        setEditingDock(dock);
         setOpenEditModal(true);
         closeContextMenu();
     };
 
-    const handleDelete = () => {
-        const newDocks = docks.filter(dock => dock.id !== contextMenu.dock.id);
+    const handleDelete = (id) => {
+        const newDocks = docks.filter(dock => dock.id !== id);
         saveDocks(newDocks);
         closeContextMenu();
     };
@@ -107,44 +125,95 @@ export default function Docks() {
         setEditingDock(null);
     };
 
-    // Drag and drop handlers
+    // Improved drag and drop handlers
     const handleDragStart = (e, index) => {
         setDraggedItem(index);
+        setIsDragging(true);
+        setDragStartPosition({ x: e.clientX, y: e.clientY });
         e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/html', '');
+        
+        // Hide edit/delete icons during drag
+        setEditDockOnRightClick(false);
+        
+        // Create drag image
+        const dragImage = e.target.cloneNode(true);
+        dragImage.style.transform = 'rotate(5deg)';
+        dragImage.style.opacity = '0.8';
+        e.dataTransfer.setDragImage(dragImage, 25, 25);
     };
 
     const handleDragOver = (e, index) => {
         e.preventDefault();
-        setDraggedOverIndex(index);
+        e.dataTransfer.dropEffect = 'move';
+        
+        if (draggedItem !== null && draggedItem !== index) {
+            setDraggedOverIndex(index);
+        }
     };
 
-    const handleDragLeave = () => {
-        setDraggedOverIndex(null);
+    const handleDragEnter = (e, index) => {
+        e.preventDefault();
+        if (draggedItem !== null && draggedItem !== index) {
+            setDraggedOverIndex(index);
+        }
+    };
+
+    const handleDragLeave = (e) => {
+        // Only clear if we're leaving the dock area entirely
+        const rect = e.currentTarget.getBoundingClientRect();
+        const { clientX, clientY } = e;
+        
+        if (
+            clientX < rect.left ||
+            clientX > rect.right ||
+            clientY < rect.top ||
+            clientY > rect.bottom
+        ) {
+            setDraggedOverIndex(null);
+        }
     };
 
     const handleDrop = (e, dropIndex) => {
         e.preventDefault();
+        e.stopPropagation();
 
         if (draggedItem === null || draggedItem === dropIndex) {
-            setDraggedItem(null);
-            setDraggedOverIndex(null);
+            resetDragState();
             return;
         }
 
         const newDocks = [...docks];
         const draggedDock = newDocks[draggedItem];
 
+        // Remove from old position
         newDocks.splice(draggedItem, 1);
-        newDocks.splice(dropIndex, 0, draggedDock);
+        
+        // Insert at new position
+        const insertIndex = draggedItem < dropIndex ? dropIndex - 1 : dropIndex;
+        newDocks.splice(insertIndex, 0, draggedDock);
 
         saveDocks(newDocks);
-        setDraggedItem(null);
-        setDraggedOverIndex(null);
+        resetDragState();
     };
 
-    const handleDragEnd = () => {
+    const handleDragEnd = (e) => {
+        resetDragState();
+    };
+
+    const resetDragState = () => {
         setDraggedItem(null);
         setDraggedOverIndex(null);
+        setIsDragging(false);
+        setDragStartPosition({ x: 0, y: 0 });
+    };
+
+    // Handle left click to close edit mode
+    const handleDockClick = (e) => {
+        e.preventDefault();
+        if (editDockOnRightClick) {
+            setEditDockOnRightClick(false);
+        }
     };
 
     useEffect(() => {
@@ -152,18 +221,11 @@ export default function Docks() {
     }, []);
 
     return (
-        <>
+        <div className="relative w-full h-full">
             <AddDocks
                 open={openAddDockModel}
                 close={setOpenAddDockModel}
                 setDockData={setDocksToLocalStorage}
-            />
-
-            <EditDockModal
-                open={openEditModal}
-                close={() => setOpenEditModal(false)}
-                dockItem={editingDock}
-                onSave={handleEditSave}
             />
 
             <SettingsModal
@@ -173,18 +235,8 @@ export default function Docks() {
 
             <FlippingClock show={showClock} />
 
-            {contextMenu && (
-                <ContextMenu
-                    x={contextMenu.x}
-                    y={contextMenu.y}
-                    onEdit={handleEdit}
-                    onDelete={handleDelete}
-                    onClose={closeContextMenu}
-                />
-            )}
-
             <div className="dock">
-                <div className="dock-container">
+                <div className="dock-container" ref={dockRef}>
                     <div className="flex">
                         {docks?.map((item, index) => (
                             <div
@@ -192,21 +244,75 @@ export default function Docks() {
                                 draggable
                                 onDragStart={(e) => handleDragStart(e, index)}
                                 onDragOver={(e) => handleDragOver(e, index)}
+                                onDragEnter={(e) => handleDragEnter(e, index)}
                                 onDragLeave={handleDragLeave}
                                 onDrop={(e) => handleDrop(e, index)}
                                 onDragEnd={handleDragEnd}
-                                onContextMenu={(e) => handleContextMenu(e, { ...item, id: item.id || Date.now() })}
-                                className={`dock-icon dock-item cursor-pointer transition-all duration-200 ${draggedOverIndex === index ? 'transform scale-110' : ''
-                                    } ${draggedItem === index ? 'opacity-50' : ''}`}
+                                onContextMenu={(e) => handleContextMenu(e, item)}
+                                onClick={handleDockClick}
+                                className={`dock-icon dock-item relative cursor-pointer transition-all duration-300 ease-out ${
+                                    draggedOverIndex === index ? 'transform scale-110 z-10' : ''
+                                } ${
+                                    draggedItem === index ? 'opacity-30 transform scale-95' : ''
+                                } ${
+                                    isDragging && draggedItem !== index ? 'transform scale-95' : ''
+                                }`}
+                                style={{
+                                    transformOrigin: 'center',
+                                    zIndex: draggedItem === index ? 1000 : 'auto'
+                                }}
                             >
-                                <a href={item.address} className="block">
+                                <a href={item.address} className="block" onClick={(e) => {
+                                    if (editDockOnRightClick) {
+                                        e.preventDefault();
+                                    }
+                                }}>
                                     <img
-                                        className="pointer-events-none"
+                                        className="pointer-events-none transition-transform duration-200"
                                         src={`https://www.google.com/s2/favicons?domain=${item.address}&sz=64`}
                                         alt={item.name}
+                                        style={{
+                                            filter: draggedItem === index ? 'blur(1px)' : 'none'
+                                        }}
                                     />
                                     <span className="tooltip">{item.name}</span>
                                 </a>
+                                
+                                {/* Animated edit/delete icons */}
+                                <div className={`absolute inset-0 transition-all duration-300 ease-out ${
+                                    editDockOnRightClick && editDockOnRightClick.id === item.id 
+                                        ? 'opacity-100 scale-100' 
+                                        : 'opacity-0 scale-90 pointer-events-none'
+                                }`}>
+                                    {/* Delete button */}
+                                    <button 
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                            handleDelete(item.id);
+                                        }}
+                                        className="absolute -top-2 -right-2 text-red-500 bg-white rounded-full shadow-lg hover:scale-110 transition-transform duration-200 z-20"
+                                    > 
+                                        <IoMdCloseCircle size={21} /> 
+                                    </button>
+                                    
+                                    {/* Edit button */}
+                                    <button 
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                            handleEdit(item);
+                                        }}
+                                        className="absolute inset-0 rounded-full bg-white/90 backdrop-blur-sm flex justify-center items-center hover:bg-white transition-all duration-200 shadow-lg z-10"
+                                    > 
+                                        <FaEdit size={14} className="text-gray-700" /> 
+                                    </button>
+                                </div>
+                                
+                                {/* Drop indicator */}
+                                {draggedOverIndex === index && draggedItem !== index && (
+                                    <div className="absolute inset-0 border-2 border-blue-400 rounded-lg animate-pulse pointer-events-none" />
+                                )}
                             </div>
                         ))}
                     </div>
@@ -228,6 +334,13 @@ export default function Docks() {
                     </button>
                 </div>
             </div>
-        </>
+
+            <EditDockModal
+                open={openEditModal}
+                close={() => setOpenEditModal(false)}
+                dock={editingDock}
+                onSave={handleEditSave}
+            />
+        </div>
     );
 }
