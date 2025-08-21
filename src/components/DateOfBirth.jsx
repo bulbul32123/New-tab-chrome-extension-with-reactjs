@@ -24,7 +24,6 @@ export default function DateOfBirth({ open, setIt }) {
                 </label>
                 <label className="block text-sm font-light">Choose a preferred birthday</label>
                 <div className="flex gap-3 mt-3">
-                    {/* Month Dropdown */}
                     <div className="relative w-full">
                         <select
                             name="month"
@@ -39,7 +38,6 @@ export default function DateOfBirth({ open, setIt }) {
                         </select>
                     </div>
 
-                    {/* Day Dropdown */}
                     <div className="relative w-full">
                         <select
                             name="day"
@@ -54,7 +52,6 @@ export default function DateOfBirth({ open, setIt }) {
                         </select>
                     </div>
 
-                    {/* Year Dropdown */}
                     <div className="relative w-full">
                         <select
                             name="year"
