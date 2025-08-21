@@ -1,7 +1,5 @@
 import React, { useEffect, useRef } from 'react'
 import {  FaTimes, FaEdit } from "react-icons/fa";
-
-// Context Menu Component
 export const ContextMenu = ({ x, y, onEdit, onDelete, onClose }) => {
   const menuRef = useRef(null);
 
