@@ -1,6 +1,5 @@
 import { IoMdAdd, IoMdCloseCircle } from "react-icons/io";
 import { IoSettingsSharp } from "react-icons/io5";
-import { ContextMenu } from "./ContextMenu";
 import { FlippingClock } from "./FlippingClock";
 import { SettingsModal } from "./SettingsModel";
 import { EditDockModal } from "./EditDockModel";
@@ -24,7 +23,6 @@ export default function Docks() {
     
     const dockRef = useRef(null);
 
-    // Activity tracking
     const updateActivity = useCallback(() => {
         setLastActivity(Date.now());
         setShowClock(false);
@@ -43,8 +41,6 @@ export default function Docks() {
             });
         };
     }, [updateActivity]);
-
-    // Click outside handler to hide edit/delete icons
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dockRef.current && !dockRef.current.contains(event.target)) {
@@ -61,7 +57,6 @@ export default function Docks() {
         };
     }, []);
 
-    // Clock timer
     useEffect(() => {
         const interval = setInterval(() => {
             if (Date.now() - lastActivity > 10000) {
@@ -125,7 +120,6 @@ export default function Docks() {
         setEditingDock(null);
     };
 
-    // Improved drag and drop handlers
     const handleDragStart = (e, index) => {
         setDraggedItem(index);
         setIsDragging(true);
@@ -133,10 +127,8 @@ export default function Docks() {
         e.dataTransfer.effectAllowed = 'move';
         e.dataTransfer.setData('text/html', '');
         
-        // Hide edit/delete icons during drag
         setEditDockOnRightClick(false);
         
-        // Create drag image
         const dragImage = e.target.cloneNode(true);
         dragImage.style.transform = 'rotate(5deg)';
         dragImage.style.opacity = '0.8';
@@ -160,7 +152,6 @@ export default function Docks() {
     };
 
     const handleDragLeave = (e) => {
-        // Only clear if we're leaving the dock area entirely
         const rect = e.currentTarget.getBoundingClientRect();
         const { clientX, clientY } = e;
         
@@ -186,10 +177,8 @@ export default function Docks() {
         const newDocks = [...docks];
         const draggedDock = newDocks[draggedItem];
 
-        // Remove from old position
         newDocks.splice(draggedItem, 1);
         
-        // Insert at new position
         const insertIndex = draggedItem < dropIndex ? dropIndex - 1 : dropIndex;
         newDocks.splice(insertIndex, 0, draggedDock);
 
@@ -208,7 +197,6 @@ export default function Docks() {
         setDragStartPosition({ x: 0, y: 0 });
     };
 
-    // Handle left click to close edit mode
     const handleDockClick = (e) => {
         e.preventDefault();
         if (editDockOnRightClick) {
@@ -278,13 +266,11 @@ export default function Docks() {
                                     <span className="tooltip">{item.name}</span>
                                 </a>
                                 
-                                {/* Animated edit/delete icons */}
                                 <div className={`absolute inset-0 transition-all duration-300 ease-out ${
                                     editDockOnRightClick && editDockOnRightClick.id === item.id 
                                         ? 'opacity-100 scale-100' 
                                         : 'opacity-0 scale-90 pointer-events-none'
                                 }`}>
-                                    {/* Delete button */}
                                     <button 
                                         onClick={(e) => {
                                             e.preventDefault();
@@ -296,7 +282,6 @@ export default function Docks() {
                                         <IoMdCloseCircle size={21} /> 
                                     </button>
                                     
-                                    {/* Edit button */}
                                     <button 
                                         onClick={(e) => {
                                             e.preventDefault();
@@ -309,7 +294,6 @@ export default function Docks() {
                                     </button>
                                 </div>
                                 
-                                {/* Drop indicator */}
                                 {draggedOverIndex === index && draggedItem !== index && (
                                     <div className="absolute inset-0 border-2 border-blue-400 rounded-lg animate-pulse pointer-events-none" />
                                 )}
