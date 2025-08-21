@@ -34,8 +34,6 @@ export default function AddMusic({ openAddMusicModel, setOpenAddMusicModel }) {
             <div className={`fixed  z-[13] w-[30rem] max-h-[90vh] overflow-y-auto transition-all duration-200 ease-in-out rounded-2xl bg-[#72727258] text-white ${openAddMusicModel ? "py-4 px-5 opacity-[1px]" : "h-0 opacity-0"}`}>
 
                 <h5 className='mb-4 font-light text-lg mt-2'>Add a Music</h5>
-
-                {/* Custom Image Upload */}
                 <div className="flex items-center justify-center flex-col">
                     <div
                         onClick={() => imgInputRef.current.click()}
@@ -59,8 +57,6 @@ export default function AddMusic({ openAddMusicModel, setOpenAddMusicModel }) {
                             onChange={(e) => setThumbnail(e.target.files[0])}
                         />
                     </div>
-
-                    {/* Custom Audio Upload */}
                     <div
                         onClick={() => audioInputRef.current.click()}
                         onDrop={(e) => {
@@ -89,7 +85,6 @@ export default function AddMusic({ openAddMusicModel, setOpenAddMusicModel }) {
 
                 </div>
 
-                {/* Text Inputs */}
                 <div className="flex flex-col gap-4 mb-4">
                     <input
                         type="text"
